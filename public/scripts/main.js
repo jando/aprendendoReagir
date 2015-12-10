@@ -1,3 +1,4 @@
+// https://facebook.github.io/react/docs/tutorial.html#events
 var data = [
   {id: 1, author: "Pete Hunt", text: "This is one comment"},
   {id: 2, author: "Jordan Walke", text: "This is *another* comment"}
@@ -64,10 +65,19 @@ var CommentForm = React.createClass({
   handleTextChange: function(e) {
     this.setState({text: e.target.value});
   },
-
+  handleSubmit: function(e) {
+    e.preventDefault();
+    var author = this.state.author.trim();
+    var text = this.state.text.trim();
+    if (!text || !author) {
+      return;
+    }
+    // TODO: send request to the server
+    this.setState({author: '', text: ''});
+  },
   render: function() {
     return (
-      <form className="commentForm">
+      <form className="commentForm" onSubmit={this.handleSubmit}>
         <input
           type="text"
           placeholder="Your name"
@@ -80,7 +90,7 @@ var CommentForm = React.createClass({
           value={this.state.text}
           onChange={this.handleTextChange}
         />
-        <input type="submit" value="Post" />
+        <input type="submit" value="Post"/>
       </form>
     );
   }
